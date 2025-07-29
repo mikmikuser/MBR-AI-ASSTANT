@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBR AI Assistant Plugin</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>MBR AI Assistant Plugin</h1>
+            <p>Your essential AI assistant for Godot 4</p>
+        </div>
+    </header>
+    <nav>
+        <ul class="container">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#download">Download</a></li>
+            <li><a href="#token">Token Generator</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section id="features" class="container">
+            <h2>Features</h2>
+            <ul>
+                <li>Seamless integration with Godot 4</li>
+                <li>AI-driven suggestions to enhance your development</li>
+                <li>Customizable and easy to use</li>
+                <li>Lightweight and optimized for performance</li>
+            </ul>
+        </section>
+        <section id="download" class="container">
+            <h2>Download</h2>
+            <p>Download the latest version of the MBR AI Assistant Plugin:</p>
+            <a href="https://github.com/mikmikuser/MBR-AI-ASSTANT/blob/main/MBR%20AI%20ASSISTANT.zip" class="button">Download Now</a>
+        </section>
+        <section id="token" class="container">
+            <h2>One-Time Token Generator</h2>
+            <p>Click the button below to generate a one-time token for your MBR Game Assistant Plugin:</p>
+            <button id="generate-token" class="button">Generate Token</button>
+            <p id="token-display" class="token-output"></p>
+        </section>
+        <section id="contact" class="container">
+            <h2>Contact</h2>
+            <p>If you have any questions or issues, feel free to <a href="https://github.com/mikmikuser/MBR-AI-ASSTANT/issues">open an issue</a> on GitHub.</p>
+        </section>
+    </main>
+    <footer class="container">
+        <p>&copy; 2025 MBR AI Assistant. All rights reserved.</p>
+    </footer>
+    <script>
+        // Event listener for the token generator button
+        document.getElementById('generate-token').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/generate-token'); // Call to backend API
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('token-display').textContent = `Your Token: ${data.token}`;
+                } else {
+                    document.getElementById('token-display').textContent = `Error: Unable to generate token.`;
+                }
+            } catch (error) {
+                document.getElementById('token-display').textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
