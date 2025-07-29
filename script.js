@@ -1,19 +1,5 @@
-// Firebase configuration
-const firebaseConfig = {
-    // Your Firebase config here
-    // Get this from Firebase Console
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
 // DOM Elements
 const currentTimeElement = document.getElementById('current-time');
-const loginSection = document.getElementById('loginSection');
-const tokenSection = document.getElementById('tokenSection');
-const userNameElement = document.getElementById('userName');
-const userAvatarElement = document.getElementById('userAvatar');
 const tokenValue = document.getElementById('tokenValue');
 const tokenHistory = document.getElementById('tokenHistory');
 
@@ -29,53 +15,13 @@ function updateTime() {
 setInterval(updateTime, 1000);
 updateTime();
 
-// Authentication state observer
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        // User is signed in
-        loginSection.classList.add('hidden');
-        tokenSection.classList.remove('hidden');
-        userNameElement.textContent = user.displayName || user.email;
-        userAvatarElement.src = user.photoURL || 'default-avatar.png';
-        loadTokenHistory(user.uid);
-    } else {
-        // User is signed out
-        loginSection.classList.remove('hidden');
-        tokenSection.classList.add('hidden');
-    }
-});
-
-// Social login handlers
-document.getElementById('googleLogin').addEventListener('click', () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider).catch(handleAuthError);
-});
-
-document.getElementById('githubLogin').addEventListener('click', () => {
-    const provider = new firebase.auth.GithubAuthProvider();
-    auth.signInWithPopup(provider).catch(handleAuthError);
-});
-
-document.getElementById('fbLogin').addEventListener('click', () => {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    auth.signInWithPopup(provider).catch(handleAuthError);
-});
-
-// Logout handler
-document.getElementById('logoutBtn').addEventListener('click', () => {
-    auth.signOut().catch(handleAuthError);
-});
-
 // Token generation
 document.getElementById('generateToken').addEventListener('click', async () => {
     try {
-        const user = auth.currentUser;
-        if (!user) throw new Error('Not authenticated');
-
-        const token = await generateNewToken(user.uid);
+        const token = await generateNewToken();
         tokenValue.textContent = token;
-        await saveTokenToHistory(user.uid, token);
-        loadTokenHistory(user.uid);
+        await saveTokenToHistory(token);
+        loadTokenHistory();
     } catch (error) {
         console.error('Token generation failed:', error);
         alert('Failed to generate token. Please try again.');
@@ -99,22 +45,22 @@ document.getElementById('copyToken').addEventListener('click', () => {
 });
 
 // Token generation function
-async function generateNewToken(userId) {
+async function generateNewToken() {
     // Generate a secure token
     const array = new Uint8Array(32);
     crypto.getRandomValues(array);
     const token = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
     
-    // Add timestamp and user identifier
+    // Add timestamp
     const timestamp = Date.now();
-    const finalToken = `${token}-${timestamp}-${userId.slice(0, 8)}`;
+    const finalToken = `${token}-${timestamp}`;
     
     return finalToken;
 }
 
-// Save token to history (using localStorage for demo)
-async function saveTokenToHistory(userId, token) {
-    const history = JSON.parse(localStorage.getItem(`tokens_${userId}`) || '[]');
+// Save token to history
+async function saveTokenToHistory(token) {
+    const history = JSON.parse(localStorage.getItem('tokens') || '[]');
     history.unshift({
         token,
         created: new Date().toISOString(),
@@ -124,12 +70,12 @@ async function saveTokenToHistory(userId, token) {
     // Keep only last 5 tokens
     if (history.length > 5) history.pop();
     
-    localStorage.setItem(`tokens_${userId}`, JSON.stringify(history));
+    localStorage.setItem('tokens', JSON.stringify(history));
 }
 
 // Load token history
-function loadTokenHistory(userId) {
-    const history = JSON.parse(localStorage.getItem(`tokens_${userId}`) || '[]');
+function loadTokenHistory() {
+    const history = JSON.parse(localStorage.getItem('tokens') || '[]');
     tokenHistory.innerHTML = history.map(entry => `
         <li>
             <span class="token-value">${entry.token.slice(0, 20)}...</span>
@@ -138,13 +84,10 @@ function loadTokenHistory(userId) {
     `).join('');
 }
 
-// Error handler
-function handleAuthError(error) {
-    console.error('Auth error:', error);
-    alert(`Authentication error: ${error.message}`);
-}
-
 // Local storage check
 if (typeof Storage === 'undefined') {
     alert('Local storage is not supported by your browser. Token history will not be saved.');
 }
+
+// Initial load of token history
+loadTokenHistory();
