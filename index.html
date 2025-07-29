@@ -3,68 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MBR AI Assistant Plugin</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>MBR AI Assistant Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>MBR AI Assistant Plugin</h1>
-            <p>Your essential AI assistant for Godot 4</p>
+            <h1>MBR AI Assistant</h1>
+            <p class="current-time" id="current-time">UTC: 2025-07-29 09:39:14</p>
         </div>
     </header>
+
     <nav>
-        <ul class="container">
-            <li><a href="#features">Features</a></li>
-            <li><a href="#download">Download</a></li>
-            <li><a href="#token">Token Generator</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-    <main>
-        <section id="features" class="container">
-            <h2>Features</h2>
+        <div class="container">
             <ul>
-                <li>Seamless integration with Godot 4</li>
-                <li>AI-driven suggestions to enhance your development</li>
-                <li>Customizable and easy to use</li>
-                <li>Lightweight and optimized for performance</li>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#settings">Settings</a></li>
+                <li><a href="#help">Help</a></li>
             </ul>
-        </section>
-        <section id="download" class="container">
-            <h2>Download</h2>
-            <p>Download the latest version of the MBR AI Assistant Plugin:</p>
-            <a href="https://github.com/mikmikuser/MBR-AI-ASSTANT/blob/main/MBR%20AI%20ASSISTANT.zip" class="button">Download Now</a>
-        </section>
-        <section id="token" class="container">
-            <h2>One-Time Token Generator</h2>
-            <p>Click the button below to generate a one-time token for your MBR Game Assistant Plugin:</p>
-            <button id="generate-token" class="button">Generate Token</button>
-            <p id="token-display" class="token-output"></p>
-        </section>
-        <section id="contact" class="container">
-            <h2>Contact</h2>
-            <p>If you have any questions or issues, feel free to <a href="https://github.com/mikmikuser/MBR-AI-ASSTANT/issues">open an issue</a> on GitHub.</p>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="dashboard" class="dashboard-grid">
+            <div class="card">
+                <h2>AI Status</h2>
+                <div class="status-indicator active">
+                    <span class="dot"></span>
+                    <span class="status-text">Active</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Quick Actions</h2>
+                <button class="action-button" id="generateBtn">Generate Response</button>
+                <button class="action-button" id="clearBtn">Clear Context</button>
+            </div>
+
+            <div class="card">
+                <h2>Response Window</h2>
+                <div class="response-area" id="responseArea">
+                    Waiting for input...
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Settings</h2>
+                <div class="settings-control">
+                    <label for="modelSelect">AI Model:</label>
+                    <select id="modelSelect">
+                        <option value="gpt4">GPT-4</option>
+                        <option value="gpt3">GPT-3.5</option>
+                        <option value="codex">Codex</option>
+                    </select>
+                </div>
+            </div>
         </section>
     </main>
-    <footer class="container">
-        <p>&copy; 2025 MBR AI Assistant. All rights reserved.</p>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 MBR AI Assistant | User: <span id="currentUser">mikmikuser</span></p>
+        </div>
     </footer>
-    <script>
-        // Event listener for the token generator button
-        document.getElementById('generate-token').addEventListener('click', async () => {
-            try {
-                const response = await fetch('/generate-token'); // Call to backend API
-                if (response.ok) {
-                    const data = await response.json();
-                    document.getElementById('token-display').textContent = `Your Token: ${data.token}`;
-                } else {
-                    document.getElementById('token-display').textContent = `Error: Unable to generate token.`;
-                }
-            } catch (error) {
-                document.getElementById('token-display').textContent = `Error: ${error.message}`;
-            }
-        });
-    </script>
+
+    <script src="script.js"></script>
 </body>
 </html>
