@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBR AI Assistant - Token Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-auth.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>MBR AI Assistant</h1>
+            <p class="subtitle">Token Generator for Godot Plugin</p>
+            <p id="current-time" class="time-display">UTC: 2025-07-29 10:01:06</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="login-container" id="loginSection">
+            <h2>Login to Generate Token</h2>
+            <div class="social-buttons">
+                <button id="googleLogin" class="social-button google">
+                    <img src="google-icon.png" alt="Google">
+                    Sign in with Google
+                </button>
+                <button id="githubLogin" class="social-button github">
+                    <img src="github-icon.png" alt="GitHub">
+                    Sign in with GitHub
+                </button>
+                <button id="fbLogin" class="social-button facebook">
+                    <img src="facebook-icon.png" alt="Facebook">
+                    Sign in with Facebook
+                </button>
+            </div>
+        </div>
+
+        <div class="token-container hidden" id="tokenSection">
+            <div class="user-info">
+                <img id="userAvatar" src="" alt="User Avatar" class="avatar">
+                <p>Welcome, <span id="userName">User</span></p>
+                <button id="logoutBtn" class="logout-button">Logout</button>
+            </div>
+            
+            <div class="token-generator">
+                <h2>Generate Plugin Token</h2>
+                <p class="info-text">Your token will be valid for 30 days</p>
+                
+                <div class="token-display" id="tokenDisplay">
+                    <p class="token-label">Your Token:</p>
+                    <code id="tokenValue">Click generate to create token</code>
+                    <button id="copyToken" class="copy-button">Copy</button>
+                </div>
+                
+                <button id="generateToken" class="generate-button">Generate New Token</button>
+                
+                <div class="token-history">
+                    <h3>Previous Tokens</h3>
+                    <ul id="tokenHistory" class="history-list">
+                        <!-- Token history will be populated here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 MBR AI Assistant | <a href="https://github.com/mikmikuser/MBR-AI-ASSTANT">GitHub Repository</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
